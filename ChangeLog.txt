@@ -1,0 +1,18 @@
+Change Log for FluxToolBox.
+
+
+
+20131008 GMW
+
+ - Cosmetic changes to detrend.m
+ - ogive.m modified to use absolute value of spectral power, thus giving a reasonable ogive shape for cases where a cospectrum contains both positive and negative spectral power.
+ - allSpectra.m modified to also output log-binned spectra and cospectra in a substructure (Sp.bin).
+ - Added function, sensHeat.m, to convert heat flux from K m/s to W/m^2.
+ - Added function f53line.m, to plot line with -5/3 slope alongside frequency spectra.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+20131001 GMW
+
+v1.0 released!
