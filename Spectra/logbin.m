@@ -19,8 +19,8 @@ newy = nan(numint,1);
 bin = zeros(length(xdata),numint);
 for j = 1:numint
     a = find(xdata>intvec(j) & xdata<(intvec(j) + intvec(j+1)));
-    newx(j) = nanmean(xdata(a));
-    newy(j,:) = nanmean(ydata(a,:),1);
+    newx(j) = mean(xdata(a),'omitnan');
+    newy(j,:) = mean(ydata(a,:),1,'omitnan');
     
     bin(a,j) = 1;
 end

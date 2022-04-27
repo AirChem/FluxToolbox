@@ -15,8 +15,8 @@ function [f co co_norm qu qu_norm] = cospectra(Fs,x,y)
 %
 % 20140319 GMW
 
-x = x - nanmean(x);
-y = y - nanmean(y);
+x = x - mean(x,'omitnan');
+y = y - mean(y,'omitnan');
 
 %% CALCULATE FREQEUNCY
 N=length(x);
@@ -43,7 +43,7 @@ co = 2*real(cross);
 qu = 2*imag(cross);
 
 %%%%%COMPARE COVARIANCES%%%%%
-covxy=nanmean(x.*y);
+covxy=mean(x.*y,'omitnan');
 cov2xy=sum(co)*df;
 reldif=abs(covxy-cov2xy)/covxy;
 if reldif > .01

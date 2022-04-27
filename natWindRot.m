@@ -27,6 +27,7 @@ function [u_r,v_r,w_r,angles] = natWindRot(u,v,w,t,nRot,plotMe)
 % 20130915 GMW
 % 20140729 GMW  changed "thirdRotation" input to "nRot" and added option to only do first rotation.
 % 20141118 GMW  added short-circuit if nRot=0.
+% 20220316 GMW  removed nanmean calls and added de-naning at top of function.
 
 %defaults
 if nargin<6
@@ -47,9 +48,13 @@ if nRot==0
     return
 end
 
+% denan
+i = isnan(u+v+w);
+u(i)=[]; v(i)=[]; w(i)=[]; t(i)=[];
+
 %Define some quantities
 u1=u; v1=v; w1=w;
-u1m=nanmean(u1); v1m=nanmean(v1); w1m=nanmean(w1);
+u1m=mean(u1); v1m=mean(v1); w1m=mean(w1);
 u1m2=u1m.^2; v1m2=v1m.^2; w1m2=w1m.^2;
 rms_uv=sqrt(u1m2+v1m2); rms_uvw=sqrt(u1m2+v1m2+w1m2);
 
@@ -65,8 +70,8 @@ v2 = v1*CE - u1*SE;
 w2 = w1*CT - u1*ST*CE - v1*ST*SE;
 
 %third rotation (optional)
-v2p = v2-nanmean(v2); w2p = w2-nanmean(w2);
-B = 0.5*atan(2*nanmean(v2p.*w2p)./(nanmean(v2p.^2)-nanmean(w2p.^2)));
+v2p = v2-mean(v2); w2p = w2-mean(w2);
+B = 0.5*atan(2*mean(v2p.*w2p)./(mean(v2p.^2)-mean(w2p.^2)));
 CB = cos(B); SB = sin(B);
 v3 = v2*CB + w2*SB;
 w3 = w2*CB - v2*SB;
@@ -105,8 +110,8 @@ if plotMe
     figure
     plot(t,u,'g-',...
         t,u_r,'c-',...
-        t,nanmean(u)*o,'k--',...
-        t,nanmean(u_r)*o,'b--')
+        t,mean(u)*o,'k--',...
+        t,mean(u_r)*o,'b--')
     xlabel('Time')
     ylabel('U wind speed')
     legend('raw','rot','raw mean','rot mean')
@@ -116,8 +121,8 @@ if plotMe
     figure
     plot(t,v,'g-',...
         t,v_r,'c-',...
-        t,nanmean(v)*o,'k--',...
-        t,nanmean(v_r)*o,'b--')
+        t,mean(v)*o,'k--',...
+        t,mean(v_r)*o,'b--')
     xlabel('Time')
     ylabel('V wind speed')
     legend('raw','rot','raw mean','rot mean')
@@ -127,8 +132,8 @@ if plotMe
     figure
     plot(t,w,'g-',...
         t,w_r,'c-',...
-        t,nanmean(w)*o,'k--',...
-        t,nanmean(w_r)*o,'b--')
+        t,mean(w)*o,'k--',...
+        t,mean(w_r)*o,'b--')
     xlabel('Time')
     ylabel('W wind speed')
     legend('raw','rot','raw mean','rot mean')

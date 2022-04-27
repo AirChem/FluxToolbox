@@ -17,9 +17,9 @@ if isempty(x)==1
     s = nan(nrow,6);
     n = nan(nrow,1);
 else
-    s(:,1)  = nanmedian(x);
-    s(:,2)  = nanmean(x);
-    s(:,3)  = nanstd(x);
+    s(:,1)  = median(x,'omitnan');
+    s(:,2)  = mean(x,'omitnan');
+    s(:,3)  = std(x,'omitnan');
     s(:,4)  = min(x);
     s(:,5)  = max(x);
     s(:,6)  = sum(~isnan(x),1);

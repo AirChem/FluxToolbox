@@ -31,7 +31,7 @@ function varargout = FluxLegPicker(varargin)
 %   roll:   aircraft roll angle
 %   pitch:  aircraft pitch angle
 %   w:      vertical wind speed, m/s
-% legTimes: a 2-column matrix of start and stop times for individual legs.
+% legTimes: a 2-column matrix of start and stop times for individual legs (can be empty).
 
 % Edit the above text to modify the response to help FluxLegPicker
 

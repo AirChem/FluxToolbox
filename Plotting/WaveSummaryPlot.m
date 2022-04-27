@@ -37,8 +37,8 @@ switch Tunit
 end
 
 % Time series
-w_plot = (W.data.w - nanmean(W.data.w))./nanstd(W.data.w);
-x_plot = (W.data.x - nanmean(W.data.x))./nanstd(W.data.x);
+w_plot = (W.data.w - mean(W.data.w,'omitnan'))./std(W.data.w,'omitnan');
+x_plot = (W.data.x - mean(W.data.x,'omitnan'))./std(W.data.x,'omitnan');
 
 % flux variables
 [cov_wx,lags] = lagCovFFT(W.data.w,W.data.x,[]); %note, x and w inputs already lagged
@@ -111,9 +111,9 @@ xlabel(Tlab)
 ylabel('Flux')
 hold on
 plot(xlim,ECflux + [0 0],'c--','LineWidth',3)
-text(0.40,0.95,['<wave>: ' num2str(nanmean(W.flux),'%3.2g')],'Color','b')
+text(0.40,0.95,['<wave>: ' num2str(mean(W.flux,'omitnan'),'%3.2g')],'Color','b')
 text(0.40,0.86,['<w''x''>: ' num2str(ECflux,'%3.2g')],'Color','c')
-text(0.40,0.75,['Ratio: ' num2str(nanmean(W.flux)./ECflux,'%2.2f')])
+text(0.40,0.75,['Ratio: ' num2str(mean(W.flux,'omitnan')./ECflux,'%2.2f')])
 
 i=W.qcoi>0.5;
 plot(T(i),W.flux(i),'kx') %mark fluxes with majority influence w/in coi

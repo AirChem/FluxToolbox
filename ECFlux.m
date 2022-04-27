@@ -114,7 +114,9 @@ function F = ECFlux(data,options)
 % 20170801 GMW  Propagated wavelet error flags
 %               Renamed "REtotal" to "REfs01"
 % 20170817 GMW  Changed REfs01 and REnoise from fractional to flux units
-
+% 20220423 GMW  Wavelet call: added removal of nans from lag-shifting. Not sure why this is broken
+%               now and not previously.
+    
 
 %% GET STARTED
 % assign default options
@@ -176,7 +178,7 @@ if despikeFlag
 end
 
 % detrend x
-[x_dt,xtrend] = detrend(x,t,xTrendType,frameSize,plotX);
+[x_dt,xtrend] = detrend_flux(x,t,xTrendType,frameSize,plotX);
 
 % calculate flux and lag
 [cov_wx,lags] = lagCovFFT(w_r,x_dt,[],plotLag);
@@ -194,7 +196,7 @@ else
     options.xLag = xLag; %replace empty value
     disp(['Best lag is ' num2str(xLag) ' points.'])
 end
-vex = flux./nanmean(x); %exchange velocity
+vex = flux./mean(x,'omitnan'); %exchange velocity
 x_dtl = lagVar(x_dt,xLag); %lag x
 
 if plotLag
@@ -212,9 +214,10 @@ nbin = 50; %number of log bins
 spectra = allSpectra(w_r,x_dtl,sampleFreq,nbin,plotSpectra);
 
 %% WAVELETS
-wdata.t = data.t;
-wdata.x = x_dtl;
-wdata.w = w_r;
+good = ~isnan(x_dtl); %nans from lag-shifting
+wdata.t = data.t(good);
+wdata.x = x_dtl(good);
+wdata.w = w_r(good);
 wdata.name = options.name;
 if isfield(data,'speed'); wdata.speed = data.speed; end
 wave = WaveletFlux(wdata,gapFill,plotWave,waveParam,scrubGapBound,waveError,errMinFreq);
@@ -238,7 +241,7 @@ xvar_noise = xvar(Elags==0) - xvar_sig; %noise variance
 if xvar_noise<0, xvar_noise = 0; end %might be negative if relatively no noise
 quality.xvarS2N = xvar_sig./xvar_noise; %Signal/Noise Ratio for variance
 quality.xstd_noise = sqrt(xvar_noise); %white noise standard deviation
-quality.REnoise = sqrt(xvar_noise.*nanstd(w_r).^2./N);
+quality.REnoise = sqrt(xvar_noise.*std(w_r,'omitnan').^2./N);
 % quality.REnoise = quality.REnoise./abs(wave.flux_avg); %fraction
 
 % Total Random Error, Finkelstein and Sims (2001) and Mauder (2013)
@@ -265,7 +268,7 @@ stats.x     = allStats(x);
 stats.w     = allStats(w);
 stats.x_dtl = allStats(x_dtl);
 stats.w_r   = allStats(w_r);
-stats.flux  = allStats((x_dtl-nanmean(x_dtl)).*(w_r-nanmean(w_r)));
+stats.flux  = allStats((x_dtl-mean(x_dtl,'omitnan')).*(w_r-mean(w_r,'omitnan')));
 stats.r_wx  = flux./(stats.w_r(3).*stats.x_dtl(3)); %correlation coefficient
 
 %% OUTPUT

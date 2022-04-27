@@ -77,8 +77,8 @@ hold on
 for j=1:nL
     Ln = ['L' num2str(j)];
     t = F.(Ln).(n).wave.data.t;
-    w = F.(Ln).(n).wave.data.w; w = (w - nanmean(w))./nanstd(w);
-    x = F.(Ln).(n).wave.data.x; x = (x - nanmean(x))./nanstd(x);
+    w = F.(Ln).(n).wave.data.w; w = (w - mean(w,'omitnan'))./std(w,'omitnan');
+    x = F.(Ln).(n).wave.data.x; x = (x - mean(x,'omitnan'))./std(x,'omitnan');
     hTX(j) = plot(t,x,'k-');
     hTW(j) = plot(t,w,'m-');
 end
@@ -102,7 +102,7 @@ for j=1:nL
     delete(h.edge)
     hTF(j) = h.mainLine;
     hTE(j) = h.patch;
-    hTT(j) = text(nanmean(F.Avg1s.Time(k)),min(F.Avg1s.(n)(k)),['L' num2str(j)],'color',c(j,:),'Units','data');
+    hTT(j) = text(mean(F.Avg1s.Time(k),'omitnan'),min(F.Avg1s.(n)(k)),['L' num2str(j)],'color',c(j,:),'Units','data');
     
     %high coi points
     k2 = k & abs(F.Avg1s.([n '_qcoi']))>0.5;

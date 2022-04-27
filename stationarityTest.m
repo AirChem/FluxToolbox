@@ -29,30 +29,30 @@ if nargin<5, runflag = 0; end
 L = length(wp); %length of whole time series
 l = floor(L./nsub); %window size
 
-wp = wp - nanmean(wp); %remove means
-xp = xp - nanmean(xp);
+wp = wp - mean(wp,'omitnan'); %remove means
+xp = xp - mean(xp,'omitnan');
 
 wpxp = wp.*xp; %individual covariances
-F = nanmean(wpxp); %total flux
+F = mean(wpxp,'omitnan'); %total flux
 
 % option 1: discrete binned covariance
 wp_short = wp(1:l*nsub); %remove remainder points off the end
 wp_mat = reshape(wp_short,l,nsub);
-wp_mean = nanmean(wp_mat,1);
+wp_mean = mean(wp_mat,1,'omitnan');
 
 xp_short = xp(1:l*nsub);
 xp_mat = reshape(xp_short,l,nsub);
-xp_mean = nanmean(xp_mat,1);
+xp_mean = mean(xp_mat,1,'omitnan');
 
-Fsub = nanmean(wp_mat.*xp_mat,1) - wp_mean.*xp_mean; %sub-fluxes
-tsub = nanmean(reshape(t(1:l*nsub),l,nsub),1); %center of each window
+Fsub = mean(wp_mat.*xp_mat,1,'omitnan') - wp_mean.*xp_mean; %sub-fluxes
+tsub = mean(reshape(t(1:l*nsub),l,nsub),1,'omitnan'); %center of each window
 
-ErrSub = 100*(1 - nanmean(Fsub)./F);
+ErrSub = 100*(1 - mean(Fsub,'omitnan')./F);
 
 % option 2: running covariance
 if runflag
     Frun = smooth(wpxp,l,'mean') - smooth(wp,l,'mean').*smooth(xp,l,'mean'); %see FW96, Eq. 13
-    ErrRun = 100*(1 - nanmean(Frun)./F);
+    ErrRun = 100*(1 - mean(Frun,'omitnan')./F);
 else
     Frun = nan*t;
     ErrRun = 0;

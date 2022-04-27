@@ -54,10 +54,10 @@ xxcov = xxcov.*bc;
 wwcov = wwcov.*bc;
 
 % compute error based on variance of covariance
-flux_err = sqrt(abs(nansum(wwcov.*xxcov + wxcov.*xwcov,2))./1); %divide by 1 instead of N b/c considering each point
+flux_err = sqrt(abs(sum(wwcov.*xxcov + wxcov.*xwcov,2,'omitnan'))./1); %divide by 1 instead of N b/c considering each point
 
 % additional outputs: time-averaged lag covariances
 if nargout>1
-    lagcovs = [lags', nanmean(wwcov,1)', nanmean(xxcov,1)', nanmean(wxcov,1)', nanmean(xwcov,1)'];
+    lagcovs = [lags', mean(wwcov,1,'omitnan')', mean(xxcov,1,'omitnan')', mean(wxcov,1,'omitnan')', mean(xwcov,1,'omitnan')'];
 end
 

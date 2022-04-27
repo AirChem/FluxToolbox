@@ -150,7 +150,7 @@ end
 
 time = t;
 N = length(time);
-dt = nanmedian(diff(time));
+dt = median(diff(time),'omitnan');
 param.dt = dt; %save for later
 dist = cumsum(dt.*speed); %cumulative distance
 
@@ -243,7 +243,7 @@ icoi = period_big>coi_big; %periods greater than coi subject to edge effects
 
 flux_nocoi = sum(power.*~icoi)';   % scale average [Eqn(24)] (divide by scale done above)
 p = power; p(icoi)=nan;
-co_nocoi = nanmean(p,2); % time average [Eqn(22)], but in units of variance and bias-corrected
+co_nocoi = mean(p,2,'omitnan'); % time average [Eqn(22)], but in units of variance and bias-corrected
 og_nocoi = ogive(freq,co_nocoi./df); %ogive, /df to get spectral density
 
 % og_big = ogive(freq,power.*period_big,1); %ogive time series (using absolute value)
@@ -398,13 +398,13 @@ W.co_fft    = co_fft;
 W.co_sig    = co_sig;
 W.flux      = flux;
 W.flux_sig  = flux_sig;
-W.flux_avg  = nanmean(flux);
+W.flux_avg  = mean(flux,'omitnan');
 W.flux_err  = flux_err;
 W.param     = param;
 W.og        = og;
 W.og_fft    = og_fft;
 W.flux_nocoi= flux_nocoi;
-W.flux_avg_nocoi  = nanmean(flux_nocoi);
+W.flux_avg_nocoi  = mean(flux_nocoi,'omitnan');
 W.co_nocoi  = co_nocoi;
 W.og_nocoi  = og_nocoi;
 W.quality   = quality;

@@ -11,7 +11,7 @@ function [f psdx psdxnorm] = spectra(Fs,x)
 %Lifted from Ian's spec_all.m file.
 %071128 GMW
 
-x = x - nanmean(x);
+x = x - mean(x,'omitnan');
 
 %% CALCULATE FREQEUNCY
 N=length(x);

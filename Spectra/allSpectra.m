@@ -44,8 +44,8 @@ if nargin<4, nbin        = 100; end
 if nargin<5, plotSpectra = 0;   end
 
 %subtract means
-x = x - nanmean(x);
-w = w - nanmean(w);
+x = x - mean(x,'omitnan');
+w = w - mean(w,'omitnan');
 
 %zero fill
 n = isnan(w+x);

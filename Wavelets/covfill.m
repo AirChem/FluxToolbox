@@ -45,17 +45,17 @@ for g = 1:size(c,1)
     end
     
     % covariance for region around gap
-    xr = x(reg); xr = xr-nanmean(xr);
-    wr = w(reg); wr = wr-nanmean(wr);
-    covr = nanmean(xr.*wr);
+    xr = x(reg); xr = xr-mean(xr,'omitnan');
+    wr = w(reg); wr = wr-mean(wr,'omitnan');
+    covr = mean(xr.*wr,'omitnan');
     
     % expected std of x, using cov = r*wstd*xstd
     r = 1; %assume perfect correlation b/c we are scaling w below
-    wstd = nanstd(w(gap));
+    wstd = std(w(gap),'omitnan');
     xstd = covr./r./wstd;
     
     % scale wind data to give a predicted value of x
-    xfill(gap) = nanmean(x(reg)) + (w(gap)-nanmean(w(gap)))./wstd.*xstd;
+    xfill(gap) = mean(x(reg),'omitnan') + (w(gap)-mean(w(gap),'omitnan'))./wstd.*xstd;
     
 end
 
