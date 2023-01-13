@@ -1,7 +1,12 @@
 Change Log for FluxToolBox.
 
+20230113 GMW
+ - Added missing subfunctions: ndiff, nanpolyfit, smooth, BinAvg
+ - Moved subfunctions to a separate folder
+ - quadPlot: changed "nanmean" to use mean with "omitnan" option. Might reduce backwards compatability.
+ - Confirmed example will run standalone without any other toolboxes or functions.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 20131008 GMW
 
  - Cosmetic changes to detrend.m
@@ -9,7 +14,6 @@ Change Log for FluxToolBox.
  - allSpectra.m modified to also output log-binned spectra and cospectra in a substructure (Sp.bin).
  - Added function, sensHeat.m, to convert heat flux from K m/s to W/m^2.
  - Added function f53line.m, to plot line with -5/3 slope alongside frequency spectra.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

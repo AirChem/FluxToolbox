@@ -21,10 +21,10 @@ q4=wprime>0 & xprime<0;
 %calculate some statistics
 n = [sum(q1) sum(q2) sum(q3) sum(q4)];
 p = n./sum(n)*100; %percentage of points in each quadrant
-f = [nanmean(wprime(q1).*xprime(q1)),... %average fluxe from each quadrant
-    nanmean(wprime(q2).*xprime(q2)),...
-    nanmean(wprime(q3).*xprime(q3)),...
-    nanmean(wprime(q4).*xprime(q4))]; 
+f = [mean(wprime(q1).*xprime(q1),'omitnan'),... %average fluxe from each quadrant
+    mean(wprime(q2).*xprime(q2),'omitnan'),...
+    mean(wprime(q3).*xprime(q3),'omitnan'),...
+    mean(wprime(q4).*xprime(q4),'omitnan')]; 
 
 %plot
 wl = max(abs(wprime))*1.5;

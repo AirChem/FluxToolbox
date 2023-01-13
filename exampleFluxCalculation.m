@@ -22,7 +22,7 @@ load exampleData.mat
 
 options.despikeFlag     = 0;        %flag for despiking x
 options.xTrendType      = 'smooth'; %mean, linear or smooth
-options.frameSize       = 4000;     %frame size for smoothing
+options.frameSize       = 400;     %frame size for smoothing, # of points
 options.thirdRotation   = 0;        %flag for third wind rotation
 options.plotX           = 1;        %flag for plotting x data
 options.plotW           = 1;        %flag for plotting wind data
@@ -32,6 +32,7 @@ options.plotSpectra     = 1;        %flag for frequency-spectrum plots
 options.nLags           = 1000;     %number of lag points for lag-covariance
 options.xLag            = [];       %lag to apply to x (if not determined automatically)
 options.nStat           = 3;        %number of sub-sets for stationarity test
+options.plotWave        = 1;        % plot wavelet fluxes
 
 %% STEP 3: CALCULATE FLUXES
 % Here, "data" and "options" are used as inputs to the ECFlux function, which performs all necessary
